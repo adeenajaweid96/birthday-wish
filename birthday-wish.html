@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎉 Birthday Vibes 🎉</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .page-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .page.active {
+            opacity: 1;
+            transform: translateX(0);
+            z-index: 10;
+        }
+
+        .page.prev {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+
+        /* Page 1 - Landing */
+        .page-1 {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #ffdde1 100%);
+        }
+
+        .page-1 h1 {
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            color: #fff;
+            text-shadow: 4px 4px 0 #ff1493, 8px 8px 0 rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            animation: bounceIn 1s ease;
+            text-align: center;
+        }
+
+        .page-1 .subtitle {
+            font-size: clamp(1.2rem, 4vw, 2rem);
+            color: #ff1493;
+            background: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(255, 20, 147, 0.3);
+        }
+
+        .emoji-big {
+            font-size: clamp(4rem, 10vw, 8rem);
+            animation: rotate 2s infinite ease-in-out;
+        }
+
+        /* Page 2 - Fun Facts */
+        .page-2 {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+
+        .page-2 h2 {
+            font-size: clamp(2rem, 6vw, 4rem);
+            color: #ff1493;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .fun-facts {
+            background: white;
+            border-radius: 30px;
+            padding: 30px;
+            max-width: 600px;
+            box-shadow: 0 15px 40px rgba(255, 105, 180, 0.3);
+        }
+
+        .fact-item {
+            font-size: clamp(1rem, 3vw, 1.4rem);
+            color: #d63384;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 5px solid #ff69b4;
+            animation: slideInLeft 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        .fact-item:nth-child(1) { animation-delay: 0.2s; }
+        .fact-item:nth-child(2) { animation-delay: 0.4s; }
+        .fact-item:nth-child(3) { animation-delay: 0.6s; }
+        .fact-item:nth-child(4) { animation-delay: 0.8s; }
+
+        /* Page 3 - GIF Gallery */
+        .page-3 {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        .page-3 h2 {
+            font-size: clamp(2rem, 6vw, 4rem);
+            color: #ff1493;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .gif-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 800px;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .gif-item {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
+            background: white;
+            aspect-ratio: 1;
+            animation: popIn 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        .gif-item:nth-child(1) { animation-delay: 0.1s; }
+        .gif-item:nth-child(2) { animation-delay: 0.2s; }
+        .gif-item:nth-child(3) { animation-delay: 0.3s; }
+        .gif-item:nth-child(4) { animation-delay: 0.4s; }
+
+        .gif-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Page 4 - Birthday Wishes */
+        .page-4 {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+        }
+
+        .page-4 h2 {
+            font-size: clamp(2rem, 6vw, 4rem);
+            color: #ff1493;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .wish-card {
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            max-width: 600px;
+            box-shadow: 0 15px 40px rgba(255, 105, 180, 0.4);
+            border: 5px solid #ff69b4;
+        }
+
+        .wish-card p {
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
+            color: #d63384;
+            line-height: 1.8;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        /* Page 5 - Final */
+        .page-5 {
+            background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+        }
+
+        .page-5 h2 {
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            color: #ff1493;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .final-message {
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            max-width: 600px;
+            box-shadow: 0 15px 40px rgba(255, 105, 180, 0.4);
+            text-align: center;
+        }
+
+        .final-message p {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: #d63384;
+            margin: 20px 0;
+        }
+
+        .celebration-emoji {
+            font-size: clamp(3rem, 8vw, 6rem);
+            margin: 20px 0;
+            animation: pulse 1s infinite;
+        }
+
+        /* Navigation */
+        .nav-button {
+            position: fixed;
+            bottom: 40px;
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(255, 20, 147, 0.4);
+            transition: all 0.3s ease;
+            z-index: 100;
+            font-weight: bold;
+        }
+
+        .nav-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(255, 20, 147, 0.6);
+        }
+
+        .nav-button.next {
+            right: 40px;
+        }
+
+        .nav-button.prev {
+            left: 40px;
+        }
+
+        .page-indicator {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: #ff1493;
+            transform: scale(1.3);
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            z-index: 999;
+            pointer-events: none;
+        }
+
+        /* Animations */
+        @keyframes bounceIn {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes slideInLeft {
+            from { transform: translateX(-50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        @keyframes rotate {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-button {
+                padding: 12px 25px;
+                bottom: 20px;
+            }
+
+            .nav-button.next { right: 20px; }
+            .nav-button.prev { left: 20px; }
+
+            .gif-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .fun-facts, .wish-card, .final-message {
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page {
+                padding: 15px;
+            }
+
+            .page-1 .subtitle {
+                padding: 12px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Indicators -->
+    <div class="page-indicator">
+        <div class="dot active" data-page="0"></div>
+        <div class="dot" data-page="1"></div>
+        <div class="dot" data-page="2"></div>
+        <div class="dot" data-page="3"></div>
+        <div class="dot" data-page="4"></div>
+    </div>
+
+    <div class="page-container">
+        <!-- Page 1: Landing -->
+        <div class="page page-1 active">
+            <div class="emoji-big">🎂</div>
+            <h1>HAPPY BIRTHDAY!</h1>
+            <div class="subtitle">Let's Celebrate! 🎉</div>
+            <div class="emoji-big">🎈</div>
+        </div>
+
+        <!-- Page 2: Fun Facts -->
+        <div class="page page-2">
+            <h2>Let's Be Real... 😏</h2>
+            <div class="fun-facts">
+                <div class="fact-item">
+                    🎯 Another year older, but let's not talk about that
+                </div>
+                <div class="fact-item">
+                    ☕ Still surviving on coffee and good vibes
+                </div>
+                <div class="fact-item">
+                    🤪 Age is just a number... that keeps getting bigger
+                </div>
+                <div class="fact-item">
+                    ✨ But you're still awesome, so there's that
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 3: GIF Party -->
+        <div class="page page-3">
+            <h2>Time to Party! 🎊</h2>
+            <div class="gif-grid">
+                <div class="gif-item">
+                    <img src="https://media.giphy.com/media/g5R9dok94mrIvplmZd/giphy.gif" alt="Birthday celebration">
+                </div>
+                <div class="gif-item">
+                    <img src="https://media.giphy.com/media/KZQlfylo73AMU/giphy.gif" alt="Happy birthday">
+                </div>
+                <div class="gif-item">
+                    <img src="https://media.giphy.com/media/l4FGp6wKxMULYtTW0/giphy.gif" alt="Party time">
+                </div>
+                <div class="gif-item">
+                    <img src="https://media.giphy.com/media/feio2yIUMtdqWjRiaF/giphy.gif" alt="Celebration">
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 4: Birthday Wishes -->
+        <div class="page page-4">
+            <h2>Birthday Mood 💕</h2>
+            <div class="wish-card">
+                <p>Congrats on leveling up! 🎮</p>
+                <p>You're officially one year closer to... well, let's not think about it 😅</p>
+                <p>Time to eat cake like calories don't exist 🍰</p>
+                <p>Have the best day ever! 🎉</p>
+            </div>
+        </div>
+
+        <!-- Page 5: Final Celebration -->
+        <div class="page page-5">
+            <h2>Now Go Celebrate!</h2>
+            <div class="final-message">
+                <div class="celebration-emoji">🎉🎊🎈</div>
+                <p>Make today AMAZING</p>
+                <p>Eat ALL the cake 🍰</p>
+                <p>Do whatever makes you happy!</p>
+                <div class="celebration-emoji">💕✨🦄</div>
+                <p><strong>Love you, bestie!</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <button class="nav-button prev" id="prevBtn" style="display: none;">← Back</button>
+    <button class="nav-button next" id="nextBtn">Next →</button>
+
+    <script>
+        let currentPage = 0;
+        const totalPages = 5;
+        const pages = document.querySelectorAll('.page');
+        const dots = document.querySelectorAll('.dot');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        function updatePage(newPage) {
+            if (newPage < 0 || newPage >= totalPages) return;
+
+            // Update pages
+            pages[currentPage].classList.remove('active');
+            pages[currentPage].classList.add('prev');
+
+            pages[newPage].classList.remove('prev');
+            pages[newPage].classList.add('active');
+
+            // Update dots
+            dots[currentPage].classList.remove('active');
+            dots[newPage].classList.add('active');
+
+            currentPage = newPage;
+
+            // Update buttons
+            prevBtn.style.display = currentPage === 0 ? 'none' : 'block';
+            nextBtn.textContent = currentPage === totalPages - 1 ? '🎉 Done!' : 'Next →';
+
+            // Add confetti on certain pages
+            if (currentPage === 0 || currentPage === 4) {
+                createConfetti();
+            }
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages - 1) {
+                updatePage(currentPage + 1);
+            } else {
+                createMassiveConfetti();
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 0) {
+                updatePage(currentPage - 1);
+            }
+        }
+
+        nextBtn.addEventListener('click', nextPage);
+        prevBtn.addEventListener('click', prevPage);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextPage();
+            if (e.key === 'ArrowLeft') prevPage();
+        });
+
+        // Swipe navigation for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) nextPage();
+            if (touchEndX > touchStartX + 50) prevPage();
+        }
+
+        // Confetti effect
+        function createConfetti() {
+            const colors = ['#ff69b4', '#ff1493', '#ffc0cb', '#ffb6c1', '#ffd700', '#87ceeb'];
+
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = '-10px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animation = `fall ${Math.random() * 2 + 2}s linear`;
+
+                document.body.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), 4000);
+            }
+        }
+
+        function createMassiveConfetti() {
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => createConfetti(), i * 300);
+            }
+        }
+
+        // Add fall animation for confetti
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fall {
+                to {
+                    transform: translateY(100vh) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initial confetti
+        window.addEventListener('load', () => {
+            setTimeout(createConfetti, 500);
+        });
+    </script>
+</body>
+</html>
